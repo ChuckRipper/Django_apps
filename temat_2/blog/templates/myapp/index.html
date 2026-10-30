@@ -1,0 +1,35 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Posty</h1>
+  <div>
+    <a href="{% url 'contact' %}" class="btn btn-outline-secondary">Kontakt</a>
+    <a href="{% url 'create_product' %}" class="btn btn-success">Dodaj post</a>
+  </div>
+</div>
+<div class="row g-4">
+  {% for product in products %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card h-100 shadow-sm">
+      <a href="{% url 'product_detail' product.slug %}">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="object-fit: cover; height: 200px;">
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="text-muted small mb-2">
+          {% if product.author %}{{ product.author }} · {% endif %}{{ product.created_at|date:"d.m.Y H:i" }}
+        </p>
+        <p class="card-text">{{ product.short_description }}</p>
+      </div>
+      <div class="card-footer bg-white">
+        <a href="{% url 'product_detail' product.slug %}" class="btn btn-sm btn-primary">Czytaj</a>
+        <a href="{% url 'edit_product' product.pk %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>
+        <a href="{% url 'delete_product' product.pk %}" class="btn btn-sm btn-outline-danger">Usuń</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-muted">Brak postów.</p>
+  {% endfor %}
+</div>
+{% endblock %}

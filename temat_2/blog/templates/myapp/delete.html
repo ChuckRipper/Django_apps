@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-6">
+<div class="card border-danger shadow-sm"><div class="card-body">
+  <h1 class="h5">Usunąć post?</h1>
+  <p>Czy na pewno chcesz usunąć <strong>{{ product.name }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Tak, usuń</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Anuluj</a>
+  </form>
+</div></div>
+</div></div>
+{% endblock %}

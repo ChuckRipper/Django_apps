@@ -1,0 +1,9 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Wysłano – Blog{% endblock %}
+{% block content %}
+<div class="alert alert-success">
+  <h1 class="h5">Dziękujemy!</h1>
+  <p class="mb-0">Wiadomość została wysłana.</p>
+</div>
+<a href="{% url 'product_list' %}" class="btn btn-primary">Wróć do postów</a>
+{% endblock %}

@@ -1,0 +1,4 @@
+{# Nagłówek kolumny z sortowaniem: pole, etykieta #}
+<a class="link-light text-decoration-none" href="?sort={% if sort == pole %}-{{ pole }}{% else %}{{ pole }}{% endif %}{% if q %}&q={{ q|urlencode }}{% endif %}">
+  {{ etykieta }}{% if sort == pole %} <i class="bi bi-caret-up-fill"></i>{% elif sort == '-'|add:pole %} <i class="bi bi-caret-down-fill"></i>{% endif %}
+</a>

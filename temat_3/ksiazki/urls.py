@@ -1,0 +1,20 @@
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('', views.lista, name='lista'),
+    path('dodaj/', views.dodaj, name='dodaj'),
+    path('<int:pk>/edytuj/', views.edytuj, name='edytuj'),
+    path('<int:pk>/usun/', views.usun, name='usun'),
+
+    path('czytelnicy/', views.czytelnicy, name='czytelnicy'),
+    path('czytelnicy/dodaj/', views.czytelnik_dodaj, name='czytelnik_dodaj'),
+    path('czytelnicy/<int:pk>/', views.czytelnik_szczegoly, name='czytelnik_szczegoly'),
+    path('czytelnicy/<int:pk>/edytuj/', views.czytelnik_edytuj, name='czytelnik_edytuj'),
+    path('czytelnicy/<int:pk>/usun/', views.czytelnik_usun, name='czytelnik_usun'),
+
+    path('wypozyczenia/', views.wypozyczenia, name='wypozyczenia'),
+    path('wypozyczenia/nowe/', views.wypozycz, name='wypozycz'),
+    path('wypozyczenia/<int:pk>/zwroc/', views.zwroc, name='zwroc'),
+]

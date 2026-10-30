@@ -1,0 +1,19 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-7">
+<div class="card shadow-sm"><div class="card-body">
+  <h1 class="h4 mb-3">Edycja: {{ product.name }}</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-3">
+      {{ field.label_tag }} {{ field }}
+      {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Powrót</a>
+  </form>
+</div></div>
+</div></div>
+{% endblock %}

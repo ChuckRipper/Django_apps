@@ -1,0 +1,35 @@
+{% extends 'ksiazki/base.html' %}
+{% block title %}Wypożyczenia – Biblioteka{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Aktywne wypożyczenia <span class="badge bg-secondary">{{ wypozyczenia|length }}</span></h1>
+  <a href="{% url 'wypozycz' %}" class="btn btn-success"><i class="bi bi-plus-lg"></i> Nowe wypożyczenie</a>
+</div>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-dark">
+        <tr><th>Książka</th><th>Czytelnik</th><th>Wypożyczono</th><th>Termin zwrotu</th><th class="text-end">Akcje</th></tr>
+      </thead>
+      <tbody>
+        {% for w in wypozyczenia %}
+        <tr class="{% if w.po_terminie %}table-danger{% endif %}">
+          <td class="fw-semibold">{{ w.ksiazka.tytul }}</td>
+          <td><a href="{% url 'czytelnik_szczegoly' w.czytelnik.pk %}">{{ w.czytelnik.imie }} {{ w.czytelnik.nazwisko }}</a></td>
+          <td>{{ w.data_wypozyczenia|date:"d.m.Y" }}</td>
+          <td>{{ w.termin_zwrotu|date:"d.m.Y" }}{% if w.po_terminie %} <span class="badge text-bg-danger">po terminie</span>{% endif %}</td>
+          <td class="text-end">
+            <form method="post" action="{% url 'zwroc' w.pk %}" class="d-inline">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-success"><i class="bi bi-box-arrow-in-left"></i> Zwróć</button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted py-4">Brak aktywnych wypożyczeń.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

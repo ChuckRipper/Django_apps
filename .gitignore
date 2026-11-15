@@ -432,3 +432,9 @@ db.sqlite3
 media/
 staticfiles/
 responses.csv
+
+# Python / JetBrains (PyCharm, IntelliJ)
+.venv/
+venv/
+.idea/
+*.iml

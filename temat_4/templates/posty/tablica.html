@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block tytul %}Tablica{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-8">
+  {% if not user.jest_zablokowany %}
+  <div class="karta p-3 mb-4">
+    <form method="post" action="{% url 'posty:nowy' %}" enctype="multipart/form-data">{% csrf_token %}
+      {% include "_formularz.html" %}
+      <button class="btn btn-primary" type="submit">Opublikuj</button>
+    </form>
+  </div>
+  {% endif %}
+  {% for post in strona %}{% include "_post.html" with na_tablicy=True %}{% empty %}
+    <p class="text-secondary text-center">Tu pojawią się posty Twoich znajomych i posty publiczne.</p>
+  {% endfor %}
+  {% include "_stronicowanie.html" %}
+</div></div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block tytul %}Logowanie{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-md-6 col-lg-4">
+  <div class="karta p-4">
+    <h1 class="h4 mb-3 text-center"><span class="logo-krag"></span>Zaloguj się</h1>
+    <form method="post">{% csrf_token %}{% include "_formularz.html" %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-primary w-100" type="submit">Zaloguj</button>
+    </form>
+    <p class="text-center mt-3 mb-0 small">Nie masz konta? <a href="{% url 'konta:rejestracja' %}">Załóż je</a></p>
+  </div>
+</div></div>{% endblock %}

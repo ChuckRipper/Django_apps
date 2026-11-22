@@ -1,0 +1,7 @@
+{% if strona.has_other_pages %}
+<nav aria-label="Stronicowanie"><ul class="pagination justify-content-center">
+  {% if strona.has_previous %}<li class="page-item"><a class="page-link" href="?strona={{ strona.previous_page_number }}">‹ Nowsze</a></li>{% endif %}
+  <li class="page-item disabled"><span class="page-link">{{ strona.number }} / {{ strona.paginator.num_pages }}</span></li>
+  {% if strona.has_next %}<li class="page-item"><a class="page-link" href="?strona={{ strona.next_page_number }}">Starsze ›</a></li>{% endif %}
+</ul></nav>
+{% endif %}

@@ -1,0 +1,5 @@
+bezpieczenstwo.log*
+staticfiles/
+media/
+db.sqlite3
+.env

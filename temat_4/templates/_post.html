@@ -1,0 +1,22 @@
+<article class="karta p-3 mb-3{% if post.ukryty %} ukryty-znacznik{% endif %}" id="post-{{ post.pk }}">
+  <div class="d-flex align-items-center gap-2 mb-2">
+    {% include "_avatar.html" with osoba=post.autor %}
+    <div>
+      <a class="fw-semibold text-decoration-none" href="{% url 'konta:profil' post.autor.username %}">{{ post.autor.username }}</a>
+      <div class="text-secondary small">
+        <a class="text-secondary" href="{% url 'posty:szczegoly' post.pk %}">{{ post.utworzono|date:"j E Y, H:i" }}</a>
+        · {{ post.get_widocznosc_display }}{% if post.grupa %} · w grupie <a class="text-secondary" href="{% url 'grupy:szczegoly' post.grupa.pk %}">{{ post.grupa.nazwa }}</a>{% endif %}
+        {% if post.ukryty %} · <span class="badge text-bg-warning etykieta">ukryty przez moderację</span>{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="post-tresc mb-2">{{ post.tresc|urlize }}</div>
+  {% if post.obraz %}<img class="post-zdjecie mb-2" src="{% url 'posty:zdjecie' post.pk %}" alt="Zdjęcie w poście" loading="lazy">{% endif %}
+  <div class="d-flex align-items-center gap-3">
+    <form method="post" action="{% url 'posty:polub' post.pk %}">{% csrf_token %}
+      {% if na_tablicy %}<input type="hidden" name="nastepny" value="tablica">{% endif %}
+      <button class="btn btn-sm {% if post.polubiony %}btn-primary{% else %}btn-outline-primary{% endif %}" type="submit">♥ {{ post.liczba_polubien }}</button>
+    </form>
+    <a class="small" href="{% url 'posty:szczegoly' post.pk %}">Komentarze ({{ post.liczba_komentarzy }})</a>
+  </div>
+</article>

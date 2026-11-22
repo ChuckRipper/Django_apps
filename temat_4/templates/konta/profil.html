@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% block tytul %}{{ profil.username }}{% endblock %}
+{% block tresc %}<div class="row g-4">
+<div class="col-lg-4">
+  <div class="karta p-4 text-center">
+    {% include "_avatar.html" with osoba=profil duzy=True %}
+    <h1 class="h4 mt-3 mb-1">{{ profil.username }}</h1>
+    {% if profil.rola >= Rola.MODERATOR %}<span class="badge text-bg-secondary">{{ profil.get_rola_display }}</span>{% endif %}
+    {% if profil.opis %}<p class="post-tresc mt-3">{{ profil.opis }}</p>{% endif %}
+    {% if pokaz_prywatne %}
+      {% if profil.miasto %}<div class="small text-secondary">📍 {{ profil.miasto }}</div>{% endif %}
+      {% if profil.data_urodzenia %}<div class="small text-secondary">🎂 {{ profil.data_urodzenia|date:"j E Y" }}</div>{% endif %}
+    {% endif %}
+    <div class="d-grid gap-2 mt-3">
+    {% if ja %}
+      <a class="btn btn-outline-primary" href="{% url 'konta:profil_edycja' %}">Edytuj profil</a>
+    {% else %}
+      {% if znajomi %}
+        <span class="badge text-bg-success">Znajomi</span>
+      {% elif relacja and relacja.od_id == user.pk %}
+        <span class="badge bg-body-secondary text-body">Zaproszenie wysłane</span>
+      {% elif relacja %}
+        <form method="post" action="{% url 'relacje:akceptuj' relacja.pk %}">{% csrf_token %}<button class="btn btn-primary w-100">Przyjmij zaproszenie</button></form>
+      {% else %}
+        <form method="post" action="{% url 'relacje:zapros' profil.username %}">{% csrf_token %}<button class="btn btn-primary w-100">Zaproś do znajomych</button></form>
+      {% endif %}
+      <form method="post" action="{% url 'wiadomosci:nowa' profil.username %}">{% csrf_token %}<button class="btn btn-outline-primary w-100">Napisz wiadomość</button></form>
+      <a class="btn btn-sm btn-link text-secondary" href="{% url 'moderacja:zglos' 'uzytkownik' profil.username %}">Zgłoś profil</a>
+      <form method="post" action="{% url 'relacje:zablokuj' profil.username %}">{% csrf_token %}<button class="btn btn-sm btn-link text-danger">Zablokuj</button></form>
+    {% endif %}
+    </div>
+  </div>
+</div>
+<div class="col-lg-8">
+  <h2 class="h5 mb-3">Posty</h2>
+  {% for post in strona %}{% include "_post.html" %}{% empty %}<p class="text-secondary">Brak postów do wyświetlenia.</p>{% endfor %}
+  {% include "_stronicowanie.html" %}
+</div>
+</div>{% endblock %}

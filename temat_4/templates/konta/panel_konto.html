@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block tytul %}Konto {{ konto.username }}{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-6"><div class="karta p-4">
+  <h1 class="h4 mb-3">Konto: {{ konto.username }}</h1>
+  <form method="post">{% csrf_token %}{% include "_formularz.html" %}
+    <button class="btn btn-primary" type="submit">Zapisz</button>
+    <a class="btn btn-link" href="{% url 'konta:panel_uzytkownicy' %}">Anuluj</a>
+  </form>
+</div></div></div>{% endblock %}

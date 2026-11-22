@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block tytul %}Rozmowa{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-7"><div class="karta p-4">
+  <h1 class="h5 mb-3">Rozmowa z {{ rozmowca.username }}</h1>
+  <div class="d-flex flex-column gap-2 mb-3">{% for w in wiadomosci %}
+    <div class="wiadomosc {% if w.nadawca_id == user.pk %}wiadomosc-moja{% else %}wiadomosc-cudza{% endif %}">{{ w.tresc }}
+      <div class="small opacity-75">{{ w.wyslano|date:"j E, H:i" }}</div></div>
+  {% empty %}<p class="text-secondary">Napisz pierwszą wiadomość.</p>{% endfor %}</div>
+  {% if zablokowana %}<p class="text-secondary mb-0">Nie możesz pisać w tej rozmowie.</p>
+  {% else %}<form method="post">{% csrf_token %}{% include "_formularz.html" %}<button class="btn btn-primary">Wyślij</button></form>{% endif %}
+</div></div></div>{% endblock %}

@@ -1,0 +1,85 @@
+{% load static %}<!doctype html>
+<html lang="pl" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="same-origin">
+  <meta name="color-scheme" content="light dark">
+  {# Motyw ustawiany PRZED wczytaniem CSS – bez mignięcia jasnej strony. Skrypt inline tylko z nonce (CSP). #}
+  <script nonce="{{ request.csp_nonce }}">
+    (function () {
+      var m = null;
+      try { m = localStorage.getItem("krag-motyw"); } catch (e) {}
+      if (m !== "dark" && m !== "light") {
+        m = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-bs-theme", m);
+    })();
+  </script>
+  <title>{% block tytul %}Krąg{% endblock %} · Krąg</title>
+  <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/krag.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-krag sticky-top shadow-sm mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'posty:tablica' %}"><span class="logo-krag"></span>Krąg</a>
+    {% if user.is_authenticated %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+            aria-controls="menu" aria-expanded="false" aria-label="Menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'posty:tablica' %}">Tablica</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'relacje:znajomi' %}">Znajomi</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'grupy:lista' %}">Grupy</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'wiadomosci:lista' %}">Wiadomości</a></li>
+        {# Linki ukryte dla ról bez dostępu – ochrona i tak jest w widokach. #}
+        {% if user.jest_moderatorem %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'moderacja:panel' %}">Moderacja</a></li>
+        {% endif %}
+        {% if user.jest_administratorem %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'konta:panel_uzytkownicy' %}">Administracja</a></li>
+        {% endif %}
+      </ul>
+      <form class="d-flex me-lg-3 my-2 my-lg-0" role="search" method="get" action="{% url 'konta:szukaj' %}">
+        <input class="form-control form-control-sm" type="search" name="q" placeholder="Szukaj osób i grup" aria-label="Szukaj">
+      </form>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-light przelacznik-motywu" type="button" title="Przełącz motyw" aria-label="Przełącz motyw" aria-pressed="false">
+      <svg class="ikona-ksiezyc" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/></svg>
+      <svg class="ikona-slonce" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/></svg>
+    </button>
+        <a class="nav-link text-white" href="{% url 'konta:moj_profil' %}">{{ user.username }}</a>
+        <form method="post" action="{% url 'konta:wylogowanie' %}">{% csrf_token %}
+          <button class="btn btn-sm btn-outline-light" type="submit">Wyloguj</button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <button class="btn btn-sm btn-outline-light przelacznik-motywu ms-auto" type="button" title="Przełącz motyw" aria-label="Przełącz motyw" aria-pressed="false">
+      <svg class="ikona-ksiezyc" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/></svg>
+      <svg class="ikona-slonce" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/></svg>
+    </button>
+    {% endif %}
+  </div>
+</nav>
+<main class="container pb-5">
+  {% for m in messages %}
+    <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+      {{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
+    </div>
+  {% endfor %}
+  {% block tresc %}{% endblock %}
+</main>
+<footer class="container text-center text-secondary small pb-4">Krąg · zadanie z przedmiotu „Aplikacje internetowe w Django”, WSB Merito Chorzów</footer>
+<script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/motyw.js' %}"></script>
+{# Strona przywrócona z bfcache po wylogowaniu – przeładuj (serwer zdecyduje, co pokazać). #}
+<script nonce="{{ request.csp_nonce }}">
+  window.addEventListener("pageshow", function (e) { if (e.persisted) { window.location.reload(); } });
+</script>
+</body>
+</html>

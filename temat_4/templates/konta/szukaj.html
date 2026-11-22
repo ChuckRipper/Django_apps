@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block tytul %}Szukaj{% endblock %}
+{% block tresc %}<div class="karta p-4">
+  <form class="d-flex gap-2 mb-4" method="get"><input class="form-control" name="q" value="{{ q }}" placeholder="Min. 2 znaki"><button class="btn btn-primary">Szukaj</button></form>
+  <div class="row"><div class="col-md-6"><h2 class="h6">Osoby</h2>
+    <ul class="list-unstyled">{% for osoba in osoby %}<li class="mb-2">{% include "_avatar.html" %} <a href="{% url 'konta:profil' osoba.username %}">{{ osoba.username }}</a></li>{% empty %}<li class="text-secondary">Brak wyników.</li>{% endfor %}</ul>
+  </div><div class="col-md-6"><h2 class="h6">Grupy</h2>
+    <ul class="list-unstyled">{% for g in grupy %}<li class="mb-2"><a href="{% url 'grupy:szczegoly' g.pk %}">{{ g.nazwa }}</a> {% if g.prywatna %}<span class="badge text-bg-secondary">prywatna</span>{% endif %}</li>{% empty %}<li class="text-secondary">Brak wyników.</li>{% endfor %}</ul>
+  </div></div>
+</div>{% endblock %}

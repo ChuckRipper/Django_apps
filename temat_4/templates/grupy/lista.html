@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block tytul %}Grupy{% endblock %}
+{% block tresc %}<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Grupy</h1><a class="btn btn-primary" href="{% url 'grupy:nowa' %}">Nowa grupa</a></div>
+<div class="row g-4">
+  <div class="col-md-6"><div class="karta p-4"><h2 class="h6">Moje grupy</h2>
+    <ul class="list-unstyled mb-0">{% for g in moje %}<li class="mb-2"><a href="{% url 'grupy:szczegoly' g.pk %}">{{ g.nazwa }}</a> {% if g.prywatna %}<span class="badge text-bg-secondary">prywatna</span>{% endif %}</li>{% empty %}<li class="text-secondary">Nie należysz do żadnej grupy.</li>{% endfor %}</ul></div></div>
+  <div class="col-md-6"><div class="karta p-4"><h2 class="h6">Pozostałe</h2>
+    <ul class="list-unstyled mb-0">{% for g in pozostale %}<li class="mb-2"><a href="{% url 'grupy:szczegoly' g.pk %}">{{ g.nazwa }}</a> {% if g.prywatna %}<span class="badge text-bg-secondary">prywatna</span>{% endif %}</li>{% empty %}<li class="text-secondary">Brak.</li>{% endfor %}</ul></div></div>
+</div>{% endblock %}

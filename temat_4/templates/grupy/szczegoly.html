@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% block tytul %}{{ grupa.nazwa }}{% endblock %}
+{% block tresc %}<div class="row g-4">
+<div class="col-lg-4"><div class="karta p-4">
+  <h1 class="h4">{{ grupa.nazwa }}</h1>
+  <span class="badge {% if grupa.prywatna %}text-bg-secondary{% else %}text-bg-success{% endif %}">{% if grupa.prywatna %}prywatna{% else %}publiczna{% endif %}</span>
+  {% if grupa.opis %}<p class="post-tresc mt-3">{{ grupa.opis }}</p>{% endif %}
+  <div class="d-grid gap-2 mt-3">
+  {% if zalozyciel %}<span class="small text-secondary">Jesteś założycielem.</span><a class="btn btn-sm btn-outline-danger" href="{% url 'grupy:usun' grupa.pk %}">Usuń grupę</a>
+  {% elif czlonek %}<form method="post" action="{% url 'grupy:opusc' grupa.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-secondary w-100">Opuść grupę</button></form>
+  {% elif oczekuje %}<span class="badge bg-body-secondary text-body">Prośba oczekuje na akceptację</span>
+  {% else %}<form method="post" action="{% url 'grupy:dolacz' grupa.pk %}">{% csrf_token %}<button class="btn btn-primary w-100">{% if grupa.prywatna %}Poproś o dołączenie{% else %}Dołącz{% endif %}</button></form>{% endif %}
+  {% if user.jest_administratorem and not zalozyciel %}<a class="btn btn-sm btn-outline-danger" href="{% url 'grupy:usun' grupa.pk %}">Usuń grupę (administrator)</a>{% endif %}
+  </div>
+  {% if prosby %}<h2 class="h6 mt-4">Prośby o dołączenie</h2>
+    {% for c in prosby %}<div class="d-flex align-items-center gap-2 mb-2"><span class="me-auto">{{ c.uzytkownik.username }}</span>
+      <form method="post" action="{% url 'grupy:akceptuj' grupa.pk c.pk %}">{% csrf_token %}<button class="btn btn-sm btn-primary">Przyjmij</button></form>
+      <form method="post" action="{% url 'grupy:usun_czlonka' grupa.pk c.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-secondary">Odrzuć</button></form></div>{% endfor %}
+  {% endif %}
+  {% if czlonkowie %}<h2 class="h6 mt-4">Członkowie</h2>
+    {% for c in czlonkowie %}<div class="d-flex align-items-center gap-2 mb-1"><a class="me-auto" href="{% url 'konta:profil' c.uzytkownik.username %}">{{ c.uzytkownik.username }}</a>
+      {% if zalozyciel and c.uzytkownik_id != user.pk %}<form method="post" action="{% url 'grupy:usun_czlonka' grupa.pk c.pk %}">{% csrf_token %}<button class="btn btn-link btn-sm text-danger p-0">usuń</button></form>{% endif %}</div>{% endfor %}
+  {% endif %}
+</div></div>
+<div class="col-lg-8">
+  {% if czlonek and not user.jest_zablokowany %}<div class="karta p-3 mb-4">
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}{% include "_formularz.html" %}<button class="btn btn-primary">Opublikuj w grupie</button></form>
+  </div>{% endif %}
+  {% if grupa.prywatna and not czlonek %}<p class="text-secondary">Posty tej grupy widzą tylko jej członkowie.</p>
+  {% else %}{% for post in strona %}{% include "_post.html" %}{% empty %}<p class="text-secondary">Brak postów.</p>{% endfor %}{% include "_stronicowanie.html" %}{% endif %}
+</div></div>{% endblock %}

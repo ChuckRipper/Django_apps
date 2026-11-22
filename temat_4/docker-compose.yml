@@ -1,0 +1,33 @@
+# Lokalnie w trybie produkcyjnym: aplikacja + PostgreSQL.
+#   cp .env.example .env   (uzupełnij sekrety)
+#   docker compose up --build
+#   docker compose exec web python manage.py dane_demo --haslo "<mocne hasło>"
+# Testy na PostgreSQL:
+#   docker compose run --rm -e DJANGO_DEBUG=1 web python manage.py test
+services:
+  db:
+    image: postgres:17-alpine
+    env_file: .env
+    volumes:
+      - dane_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      retries: 10
+
+  web:
+    build: .
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - pliki_uzytkownikow:/app/media
+      - logi:/app/logs
+
+volumes:
+  dane_postgres:
+  pliki_uzytkownikow:
+  logi:

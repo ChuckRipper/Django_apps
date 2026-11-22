@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block tytul %}Formularz wygasł{% endblock %}
+{% block tresc %}<div class="karta p-4 mx-auto text-center okno-bledu">
+  <h1 class="h4 mb-3">Formularz wygasł</h1>
+  <p>Odśwież stronę i spróbuj ponownie.</p>
+  <a class="btn btn-primary" href="{% url 'posty:tablica' %}">Wróć na tablicę</a>
+</div>{% endblock %}

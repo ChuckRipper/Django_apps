@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block tytul %}Zgłoszenie{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-6"><div class="karta p-4">
+  <h1 class="h5 mb-3">Zgłoś {% if typ == 'uzytkownik' %}użytkownika{% elif typ == 'komentarz' %}komentarz{% else %}post{% endif %}</h1>
+  <form method="post">{% csrf_token %}{% include "_formularz.html" %}<button class="btn btn-primary">Wyślij zgłoszenie</button></form>
+</div></div></div>{% endblock %}

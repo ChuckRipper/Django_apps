@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block tytul %}{% if post %}Edycja posta{% else %}Nowy post{% endif %}{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-7"><div class="karta p-4">
+  <h1 class="h5 mb-3">{% if post %}Edycja posta{% else %}Nowy post{% endif %}</h1>
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}{% include "_formularz.html" %}
+    <div class="form-text mb-3">Zdjęcie: JPG, PNG lub WebP, maks. 5 MB.</div>
+    <button class="btn btn-primary" type="submit">Zapisz</button>
+  </form>
+</div></div></div>{% endblock %}

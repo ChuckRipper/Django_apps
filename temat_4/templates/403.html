@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block tytul %}Brak dostępu{% endblock %}
+{% block tresc %}<div class="karta p-4 mx-auto text-center okno-bledu">
+  <h1 class="h4 mb-3">{{ komunikat|default:"Ta treść nie jest przeznaczona dla Ciebie." }}</h1>
+  <a class="btn btn-primary" href="{% url 'posty:tablica' %}">Wróć na tablicę</a>
+</div>{% endblock %}

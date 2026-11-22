@@ -1,0 +1,1 @@
+{% if osoba.avatar %}<img class="avatar{% if duzy %} avatar-duzy{% endif %}" src="{% url 'posty:avatar' osoba.pk %}" alt="">{% else %}<span class="avatar{% if duzy %} avatar-duzy{% endif %}">{{ osoba.username|first|upper }}</span>{% endif %}

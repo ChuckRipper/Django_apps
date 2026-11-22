@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block tytul %}Zgłoszenie{% endblock %}
+{% block tresc %}<div class="row g-4">
+<div class="col-lg-7"><div class="karta p-4">
+  <h1 class="h5">Zgłoszenie: {{ zgl.get_typ_display }}</h1>
+  <dl class="row small mb-3">
+    <dt class="col-4">Powód</dt><dd class="col-8">{{ zgl.get_powod_display }}</dd>
+    <dt class="col-4">Opis zgłaszającego</dt><dd class="col-8 post-tresc">{{ zgl.opis|default:"—" }}</dd>
+    <dt class="col-4">Autor treści / osoba</dt><dd class="col-8">{{ zgl.uzytkownik.username|default:"(konto usunięte)" }}</dd>
+    <dt class="col-4">Status</dt><dd class="col-8">{{ zgl.get_status_display }}</dd>
+  </dl>
+  <h2 class="h6">Zgłoszona treść (stan z chwili zgłoszenia)</h2>
+  <div class="border rounded p-3 post-tresc bg-body-tertiary">{{ zgl.kopia_tresci }}</div>
+  {% if zgl.post and zgl.post.obraz %}<img class="post-zdjecie mt-2" src="{% url 'moderacja:zdjecie' zgl.pk %}" alt="Zdjęcie ze zgłoszonego posta">{% endif %}
+  {% if zgl.typ != 'uzytkownik' and not zgl.post and not zgl.komentarz %}<p class="small text-secondary mt-2">Treść została już usunięta.</p>{% endif %}
+  {% if akcje %}<h2 class="h6 mt-4">Działania</h2><ul class="small">{% for a in akcje %}<li>{{ a.utworzono|date:"j.m.Y H:i" }} – {{ a.wykonal.username }}: {{ a.get_akcja_display }}</li>{% endfor %}</ul>{% endif %}
+</div></div>
+<div class="col-lg-5">{% if zgl.status == 'nowe' %}<div class="karta p-4">
+  <h2 class="h6">Decyzja</h2>
+  <form method="post">{% csrf_token %}{% include "_formularz.html" %}<button class="btn btn-primary">Zapisz decyzję</button></form>
+</div>{% endif %}</div>
+</div>{% endblock %}

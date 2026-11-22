@@ -1,0 +1,11 @@
+# Temat 4 – portal „Krąg”. Zadanie wymaga Django 5.x (5.2 = LTS do 04.2028).
+Django==5.2.18
+django-axes==9.0.0
+django-csp==4.0
+argon2-cffi==25.1.0
+Pillow==12.3.0
+dj-database-url==3.1.2
+whitenoise==6.12.0
+# Serwer i PostgreSQL (Docker / Render):
+gunicorn==27.0.1
+psycopg[binary]==3.3.9

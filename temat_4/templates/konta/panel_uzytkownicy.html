@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block tytul %}Administracja{% endblock %}
+{% block tresc %}<div class="karta p-4">
+  <h1 class="h4 mb-3">Użytkownicy</h1>
+  <form class="d-flex gap-2 mb-3" method="get"><input class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Login"><button class="btn btn-outline-primary">Filtruj</button></form>
+  <div class="table-responsive"><table class="table align-middle">
+    <thead><tr><th>Login</th><th>Rola</th><th>Status</th><th></th></tr></thead>
+    <tbody>{% for u in uzytkownicy %}<tr>
+      <td>{{ u.username }}</td><td>{{ u.get_rola_display }}</td>
+      <td>{% if u.jest_zablokowany %}<span class="badge text-bg-danger">zablokowany do {{ u.zablokowany_do|date:"j.m.Y H:i" }}</span>{% elif not u.is_active %}<span class="badge text-bg-secondary">nieaktywny</span>{% else %}<span class="badge text-bg-success">aktywny</span>{% endif %}</td>
+      <td class="text-end">{% if u.pk != user.pk %}<a class="btn btn-sm btn-outline-primary" href="{% url 'konta:panel_konto' u.pk %}">Zarządzaj</a>{% else %}<span class="text-secondary small">to Ty</span>{% endif %}</td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  {% if is_paginated %}<nav><ul class="pagination">{% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹</a></li>{% endif %}<li class="page-item disabled"><span class="page-link">{{ page_obj.number }}/{{ paginator.num_pages }}</span></li>{% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">›</a></li>{% endif %}</ul></nav>{% endif %}
+  <a href="{% url 'moderacja:historia' %}">Historia działań moderatorów i administratorów →</a>
+</div>{% endblock %}

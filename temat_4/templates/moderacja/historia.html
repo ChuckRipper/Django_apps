@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block tytul %}Historia działań{% endblock %}
+{% block tresc %}<div class="karta p-4"><h1 class="h4 mb-3">Historia działań</h1>
+<div class="table-responsive"><table class="table"><thead><tr><th>Kiedy</th><th>Kto</th><th>Co</th><th>Cel</th><th>Uzasadnienie</th></tr></thead>
+<tbody>{% for a in akcje %}<tr><td class="small">{{ a.utworzono|date:"j.m.Y H:i" }}</td><td>{{ a.wykonal.username|default:"—" }}</td><td>{{ a.get_akcja_display }}</td><td>{{ a.cel }}</td><td class="small">{{ a.uzasadnienie }}</td></tr>
+{% empty %}<tr><td colspan="5" class="text-secondary">Brak działań.</td></tr>{% endfor %}</tbody></table></div>
+{% if is_paginated %}<nav><ul class="pagination">{% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹</a></li>{% endif %}<li class="page-item disabled"><span class="page-link">{{ page_obj.number }}/{{ paginator.num_pages }}</span></li>{% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">›</a></li>{% endif %}</ul></nav>{% endif %}
+</div>{% endblock %}

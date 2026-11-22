@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block tytul %}Rejestracja{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-md-7 col-lg-5">
+  <div class="karta p-4">
+    <h1 class="h4 mb-3 text-center"><span class="logo-krag"></span>Dołącz do Kręgu</h1>
+    <form method="post" novalidate>{% csrf_token %}{% include "_formularz.html" %}
+      <button class="btn btn-primary w-100" type="submit">Załóż konto</button>
+    </form>
+    <p class="text-center mt-3 mb-0 small">Masz już konto? <a href="{% url 'konta:logowanie' %}">Zaloguj się</a></p>
+  </div>
+</div></div>{% endblock %}

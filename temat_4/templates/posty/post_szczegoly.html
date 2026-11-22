@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% block tytul %}Post{% endblock %}
+{% block tresc %}<div class="row justify-content-center"><div class="col-lg-8">
+  {% include "_post.html" %}
+  <div class="d-flex gap-3 mb-3 small">
+    {% if post.autor_id == user.pk %}<a href="{% url 'posty:edycja' post.pk %}">Edytuj</a>{% endif %}
+    {% if moze_usunac %}<a class="text-danger" href="{% url 'posty:usun' post.pk %}">Usuń</a>{% endif %}
+    {% if post.autor_id != user.pk %}<a class="text-secondary" href="{% url 'moderacja:zglos' 'post' post.pk %}">Zgłoś</a>{% endif %}
+  </div>
+  <div class="karta p-3">
+    <h2 class="h6">Komentarze</h2>
+    {% for k in komentarze %}
+      <div class="border-bottom py-2{% if k.ukryty %} ukryty-znacznik ps-2{% endif %}">
+        <a class="fw-semibold" href="{% url 'konta:profil' k.autor.username %}">{{ k.autor.username }}</a>
+        <span class="text-secondary small">{{ k.utworzono|date:"j E, H:i" }}</span>
+        <div class="post-tresc">{{ k.tresc }}</div>
+        <div class="d-flex gap-2 small">
+          {% if k.autor_id == user.pk or post.autor_id == user.pk %}
+          <form method="post" action="{% url 'posty:usun_komentarz' k.pk %}">{% csrf_token %}<button class="btn btn-link btn-sm p-0 text-danger">Usuń</button></form>
+          {% endif %}
+          {% if k.autor_id != user.pk %}<a class="text-secondary" href="{% url 'moderacja:zglos' 'komentarz' k.pk %}">Zgłoś</a>{% endif %}
+        </div>
+      </div>
+    {% empty %}<p class="text-secondary small">Brak komentarzy.</p>{% endfor %}
+    {% if not user.jest_zablokowany %}
+    <form class="mt-3" method="post" action="{% url 'posty:komentarz' post.pk %}">{% csrf_token %}
+      {% include "_formularz.html" with form=form_komentarza %}
+      <button class="btn btn-sm btn-primary" type="submit">Skomentuj</button>
+    </form>
+    {% endif %}
+  </div>
+</div></div>{% endblock %}

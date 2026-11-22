@@ -1,0 +1,17 @@
+{% load krag %}{% if form.non_field_errors %}<div class="alert alert-danger">{% for e in form.non_field_errors %}<div>{{ e }}</div>{% endfor %}</div>{% endif %}
+{% for pole in form.visible_fields %}
+  <div class="mb-3{% if pole.field.widget.input_type == 'checkbox' %} form-check{% endif %}">
+    {% if pole.field.widget.input_type == 'checkbox' %}
+      {{ pole|pole_bs }} <label class="form-check-label" for="{{ pole.id_for_label }}">{{ pole.label }}</label>
+    {% elif pole.field.widget.input_type == 'radio' %}
+      <div class="form-label">{{ pole.label }}</div>
+      {% for opcja in pole %}<div class="form-check">{{ opcja.tag }} <label class="form-check-label" for="{{ opcja.id_for_label }}">{{ opcja.choice_label }}</label></div>{% endfor %}
+    {% else %}
+      {% if pole.label %}<label class="form-label" for="{{ pole.id_for_label }}">{{ pole.label }}</label>{% endif %}
+      {{ pole|pole_bs }}
+    {% endif %}
+    {% if pole.help_text %}<div class="form-text">{{ pole.help_text }}</div>{% endif %}
+    {% for e in pole.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+  </div>
+{% endfor %}
+{% for ukryte in form.hidden_fields %}{{ ukryte }}{% endfor %}

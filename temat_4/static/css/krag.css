@@ -1,0 +1,73 @@
+/* Krąg – własny wygląd na bazie Bootstrapa 5 (bez cudzych logotypów). */
+:root, [data-bs-theme="light"] {
+  --krag-glowny: #1f6f6b;
+  --krag-glowny-ciemny: #155552;
+  --krag-akcent: #e8a33d;
+  --krag-tlo: #f4f1ea;
+  --krag-karta: #fffdf8;
+  --krag-ramka: #e6e0d3;
+  --krag-avatar-tlo: #d9d2c3;
+  --krag-avatar-tekst: #5d5547;
+  --krag-dymek-cudzy: #ebe5d8;
+  --krag-belka: #1f6f6b;
+  --bs-primary: #1f6f6b;
+  --bs-primary-rgb: 31, 111, 107;
+  --bs-link-color: #1f6f6b;
+  --bs-link-color-rgb: 31, 111, 107;
+  --bs-link-hover-color: #155552;
+  --bs-body-bg: #f4f1ea;
+  --bs-border-radius: .75rem;
+}
+/* Ciemny motyw: te same proporcje, przygaszone tło, jaśniejszy turkus dla kontrastu (WCAG AA). */
+[data-bs-theme="dark"] {
+  --krag-glowny: #3fa9a2;
+  --krag-glowny-ciemny: #2f8b85;
+  --krag-akcent: #f0b357;
+  --krag-tlo: #14191a;
+  --krag-karta: #1c2324;
+  --krag-ramka: #2c3637;
+  --krag-avatar-tlo: #2f3a3b;
+  --krag-avatar-tekst: #c9d3d2;
+  --krag-dymek-cudzy: #2a3334;
+  --krag-belka: #12403d;
+  --bs-primary: #3fa9a2;
+  --bs-primary-rgb: 63, 169, 162;
+  --bs-link-color: #6cc7c0;
+  --bs-link-color-rgb: 108, 199, 192;
+  --bs-link-hover-color: #93d9d3;
+  --bs-body-bg: #14191a;
+  --bs-body-color: #e3e8e7;
+  --bs-border-radius: .75rem;
+}
+body { background: var(--krag-tlo); }
+.btn-primary { --bs-btn-bg: var(--krag-glowny); --bs-btn-border-color: var(--krag-glowny);
+  --bs-btn-hover-bg: var(--krag-glowny-ciemny); --bs-btn-hover-border-color: var(--krag-glowny-ciemny);
+  --bs-btn-active-bg: var(--krag-glowny-ciemny); }
+.btn-outline-primary { --bs-btn-color: var(--krag-glowny); --bs-btn-border-color: var(--krag-glowny);
+  --bs-btn-hover-bg: var(--krag-glowny); --bs-btn-hover-border-color: var(--krag-glowny); }
+.navbar-krag { background: var(--krag-belka); }
+.navbar-krag .navbar-brand { font-weight: 800; letter-spacing: .02em; }
+.logo-krag { display: inline-block; width: 1.4rem; height: 1.4rem; border-radius: 50%;
+  border: .25rem solid var(--krag-akcent); margin-right: .45rem; vertical-align: -0.25rem; }
+.karta { background: var(--krag-karta); border: 1px solid var(--krag-ramka); border-radius: 1rem; }
+.avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; background: var(--krag-avatar-tlo);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: var(--krag-avatar-tekst); }
+.avatar-duzy { width: 6rem; height: 6rem; font-size: 2rem; }
+.post-tresc { white-space: pre-line; overflow-wrap: anywhere; }
+.post-zdjecie { max-height: 32rem; width: 100%; object-fit: cover; border-radius: .75rem; }
+.etykieta { font-size: .75rem; }
+.wiadomosc { max-width: 75%; border-radius: 1rem; padding: .5rem .85rem; white-space: pre-line; overflow-wrap: anywhere; }
+.wiadomosc-moja { background: var(--krag-glowny); color: #fff; margin-left: auto; }
+.wiadomosc-cudza { background: var(--krag-dymek-cudzy); }
+.okno-bledu { max-width: 32rem; }
+.form-check-inline-lista ul { list-style: none; padding-left: 0; }
+.ukryty-znacznik { border-left: .35rem solid var(--krag-akcent); }
+.przelacznik-motywu { line-height: 1; padding: .3rem .45rem; }
+.przelacznik-motywu svg { width: 1.1rem; height: 1.1rem; display: block; }
+[data-bs-theme="dark"] .ikona-ksiezyc, [data-bs-theme="light"] .ikona-slonce { display: none; }
+/* Belka przyklejona u góry: kotwice (#post-…) nie mogą chować się pod nią. */
+html { scroll-padding-top: 5rem; }
+@media (max-width: 991.98px) {
+  /* Rozwinięte menu na telefonie przewija się samo, gdy jest wyższe niż ekran. */
+  .navbar-krag .navbar-collapse { max-height: calc(100vh - 4rem); overflow-y: auto; }
+}
